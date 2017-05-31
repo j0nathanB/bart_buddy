@@ -1,0 +1,24 @@
+<% include head.ejs%>
+
+    <div id='root'></div>
+    <script src="/dist/bundle.js"></script>
+
+    <h1>I am a map woring in index.ejs</h1>
+	<script>	
+     var map = eon.map({
+       pubnub: new PubNub({
+         publishKey:   'pub-c-34cc14b5-87bc-43e4-8c58-55f6f44ed513', // replace with your own pub-key
+         subscribeKey: 'sub-c-434cd75e-44a3-11e7-b6a4-02ee2ddab7fe' // replace with your own sub-key
+       }),
+       channels: ['eon-map'],
+       id: 'html-id',
+       mbToken: 'pk.eyJ1IjoiamF4b25jYXJ0ZXIiLCJhIjoiY2ozYXkyeTMwMDExbTJ5cGh0N3I5M2djNiJ9.BiO4svi_FBp5s49sLjiglg',
+       mbId: 'ianjennings.l896mh2e',
+       message: function (data) {
+       	console.log(data)
+         map.setView(data[3].latlng);
+  	   }
+     });
+	</script>
+
+<% include foot.ejs%>
