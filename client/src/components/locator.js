@@ -22,12 +22,17 @@ let getClosestStation = (userCoords) => {
   });
 
   for (let i = 0; i < stations.length; i++) {
-    distances.push({name: stationCoords[i].name, distance: getDistance(userCoords, stationCoords[i]) });
+    distances.push({ 
+      name: stationCoords[i].name, 
+      lat: stationCoords[i].lat, 
+      long: stationCoords[i].long, 
+      distance: getDistance(userCoords, stationCoords[i]) 
+    });
   }
 
   let shortestDistance = Math.min.apply(Math, distances.map( station => station.distance ));
   let closestStation = distances.find( station => station.distance === shortestDistance );
-
+ 
   return closestStation;
 };
 
