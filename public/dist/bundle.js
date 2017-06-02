@@ -12660,8 +12660,8 @@ var MapTest = function (_React$Component) {
         }),
         channels: ['eon-map'],
         id: 'map',
-        mbToken: 'pk.eyJ1IjoidnNvdGlyb3AxIiwiYSI6ImNqM2NkdnB3MzAwMzUyeXF1b3M4cHN2ZngifQ.21rZ6afFV-27jola7Jcyzg',
-        mbId: 'mapbox://styles/mapbox/streets-v8',
+        mbToken: 'pk.eyJ1IjoiamF4b25jYXJ0ZXIiLCJhIjoiY2ozYXkyeTMwMDExbTJ5cGh0N3I5M2djNiJ9.BiO4svi_FBp5s49sLjiglg',
+        mbId: 'jaxoncarter.cj3g8edgk000d33mh10iqxryr-4ndup',
         message: function message(data) {
           map.setView(data[3].latlng);
         }
@@ -12672,42 +12672,51 @@ var MapTest = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         'div',
-        { id: 'map' },
+        null,
         _react2.default.createElement(
           'button',
           { onClick: this.handleClick.bind(this) },
           ' Dance, Petunia '
         ),
         _react2.default.createElement(
-          _reactMapboxGl2.default,
-          {
-            style: 'mapbox://styles/mapbox/streets-v8',
-            accessToken: 'pk.eyJ1IjoidnNvdGlyb3AxIiwiYSI6ImNqM2NkdnB3MzAwMzUyeXF1b3M4cHN2ZngifQ.21rZ6afFV-27jola7Jcyzg',
-            containerStyle: {
-              height: "500px",
-              width: "100%"
-            },
-            center: this.state.center },
-          _react2.default.createElement(_reactMapboxGl.ScaleControl, null),
-          _react2.default.createElement(_reactMapboxGl.ZoomControl, null),
-          _react2.default.createElement(_reactMapboxGl.GeoJSONLayer, {
-            data: {
-              "type": "Feature",
-              "properties": {},
-              "geometry": {
-                "type": "LineString",
-                "coordinates": [[-122.41396230664543, 37.77932679789778], [-122.40689875759873, 37.784909447469474]]
+          'div',
+          { id: 'map' },
+          _react2.default.createElement(
+            _reactMapboxGl2.default,
+            {
+              style: 'mapbox://styles/jaxoncarter/cj3gdu8u5000u2sqzx5jpufk7',
+              accessToken: 'pk.eyJ1IjoiamF4b25jYXJ0ZXIiLCJhIjoiY2ozYXkyeTMwMDExbTJ5cGh0N3I5M2djNiJ9.BiO4svi_FBp5s49sLjiglg',
+              containerStyle: {
+                height: "500px",
+                width: "100%"
+              },
+              center: this.state.center },
+            _react2.default.createElement(_reactMapboxGl.ScaleControl, null),
+            _react2.default.createElement(_reactMapboxGl.ZoomControl, null),
+            _react2.default.createElement(_reactMapboxGl.GeoJSONLayer, {
+              data: {
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                  "type": "LineString",
+                  "coordinates": [[-122.41396230664543, 37.77932679789778], [-122.40689875759873, 37.784909447469474]]
+                }
+              },
+              lineLayout: {
+                'line-join': 'round',
+                'line-cap': 'round'
+              },
+              linePaint: {
+                'line-color': '#395',
+                'line-width': 8
               }
-            },
-            lineLayout: {
-              'line-join': 'round',
-              'line-cap': 'round'
-            },
-            linePaint: {
-              'line-color': '#395',
-              'line-width': 8
-            }
-          })
+            })
+          ),
+          _react2.default.createElement(
+            'h1',
+            null,
+            'Bottom'
+          )
         )
       );
     }
