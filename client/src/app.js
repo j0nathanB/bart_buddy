@@ -6,7 +6,7 @@ import View from './components/view';
 import Bulletin from './components/bulletin';
 import Station from './components/station';
 import TrainRoutes from './components/trainRoutes';
-import Map from './components/map/mapView.js';
+import Map from './components/map.js';
 import ClosestStation from './components/closestStation';
 
 const getCoords = () => new Promise((resolve, reject) => {
