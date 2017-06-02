@@ -9,6 +9,7 @@ import TrainRoutes from './components/trainRoutes';
 import Map from './components/map.js';
 import ClosestStation from './components/closestStation';
 
+
 const getCoords = () => new Promise((resolve, reject) => {
   navigator.geolocation.getCurrentPosition((position) => {
     resolve({ lat: position.coords.latitude, long: position.coords.longitude });
@@ -22,7 +23,8 @@ class App extends React.Component {
     this.state = { 
       lat: 0,
       long: 0,
-      isLoading: false
+      isLoading: false,
+      currentStation: ''
     };
   }
 
