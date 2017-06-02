@@ -31,7 +31,7 @@ class MapTest extends React.Component {
   }
 
     handleClick () {
-    setInterval((arg) => {
+     setInterval((arg) => {
        new PubNub({
          publishKey: mapAttributes.publishKey, // replace with your own pub-key
          subscribeKey: mapAttributes.subscribeKey // replace with your own sub-key
@@ -45,8 +45,9 @@ class MapTest extends React.Component {
         {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
         {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
         ]
-    });
+   });
    }, 1000)
+
   }
 
     componentDidMount() {
@@ -58,8 +59,8 @@ class MapTest extends React.Component {
       }),
        channels: ['eon-map'],
        id: 'map',
-       mbToken: 'pk.eyJ1IjoidnNvdGlyb3AxIiwiYSI6ImNqM2NkdnB3MzAwMzUyeXF1b3M4cHN2ZngifQ.21rZ6afFV-27jola7Jcyzg',
-       mbId: 'mapbox://styles/mapbox/streets-v8',
+       mbToken: 'pk.eyJ1IjoiamF4b25jYXJ0ZXIiLCJhIjoiY2ozYXkyeTMwMDExbTJ5cGh0N3I5M2djNiJ9.BiO4svi_FBp5s49sLjiglg',
+       mbId: 'jaxoncarter.cj3g8edgk000d33mh10iqxryr-4ndup',
        message: function (data) {
          map.setView(data[3].latlng);
       }
@@ -68,17 +69,17 @@ class MapTest extends React.Component {
 
   render () {
     return (
-      
-      <div id='map'>
+      <div>
       <button onClick={this.handleClick.bind(this)}> Dance, Petunia </button>
+      <div id='map'>
       <ReactMapboxGl
-        style="mapbox://styles/mapbox/streets-v8"
-        accessToken="pk.eyJ1IjoidnNvdGlyb3AxIiwiYSI6ImNqM2NkdnB3MzAwMzUyeXF1b3M4cHN2ZngifQ.21rZ6afFV-27jola7Jcyzg"
+        style="mapbox://styles/jaxoncarter/cj3gdu8u5000u2sqzx5jpufk7"
+        accessToken="pk.eyJ1IjoiamF4b25jYXJ0ZXIiLCJhIjoiY2ozYXkyeTMwMDExbTJ5cGh0N3I5M2djNiJ9.BiO4svi_FBp5s49sLjiglg"
         containerStyle={{
           height: "500px",
           width: "100%"
         }}
-        center={this.state.center}>
+        center={this.state.center}> 
         <ScaleControl />
         <ZoomControl />
         <GeoJSONLayer
@@ -103,7 +104,10 @@ class MapTest extends React.Component {
             }}
           />
       </ReactMapboxGl>
+      <h1>Bottom</h1>
       </div>
+      </div>
+
     );
   }
 }

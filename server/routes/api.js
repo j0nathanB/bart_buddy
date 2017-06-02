@@ -47,7 +47,12 @@ router.route('/get_stations')
       console.log('I am working from inside get_stations');
       var json = parser.toJson(result.data);
       let data = JSON.parse(json);
-      res.send(data.root.stations.station);
+      let newArray = [];
+      data.root.stations.station.forEach((x) => {
+        newArray.push([parseFloat(x.gtfs_longitude), parseFloat(x.gtfs_latitude)])
+      })
+      //console.log(newArray)
+      res.send(newArray);
     })
     .catch( (err) => {
       console.log('error from weather api: ', err.message);
