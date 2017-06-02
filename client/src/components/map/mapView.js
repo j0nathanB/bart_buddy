@@ -18,10 +18,9 @@ const channel = 'bart_buddy';
 class Map extends React.Component {
 	constructor(props) {
 		super (props)
-	}
-
-	componentDidMount() {
-		//here we can add the bart api connection to the PubNub API
+    this.state = {
+      map: {}
+    }
 	}
 
 	handleClick () {
@@ -30,7 +29,7 @@ class Map extends React.Component {
          publishKey: mapAttributes.publishKey, // replace with your own pub-key
          subscribeKey: mapAttributes.subscribeKey // replace with your own sub-key
        }).publish({
-        channel:  'eon-map',
+        channel: 'eon-map',
         message: [
         {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
         {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
@@ -43,61 +42,28 @@ class Map extends React.Component {
    }, 1000)
 	}
 
+  componentDidMount() {
+    console.log(JSON.stringify(eon))
+     let map = eon.map({
+       pubnub: new PubNub({
+        publishKey: mapAttributes.publishKey, // replace with your own pub-key
+        subscribeKey: mapAttributes.subscribeKey // replace with your own sub-key
+       }),
+       channels: ['eon-map'],
+       id: 'map',
+       mbToken: 'pk.eyJ1IjoiamF4b25jYXJ0ZXIiLCJhIjoiY2ozYXkyeTMwMDExbTJ5cGh0N3I5M2djNiJ9.BiO4svi_FBp5s49sLjiglg',
+       mbId: 'ianjennings.l896mh2e',
+       message: function (data) {
+         map.setView(data[3].latlng);
+       }
+     })
+  }
 
-	// componentWillMount () {
-	// 	pubnub.subscribe({
- //    channel: channel,
- //    restore: true,
- //    connect: () => this.connect(),
- //    message: (m) => this.success(m) //callbak in this case
- //  });
-	// }
-
-	//  publish() {
-	   
-	//     pubnub = new PubNub({
-	//         publishKey : publishKey,
-	//         subscribeKey : subscribeKey
-	//     })
-	       
-	//     function publishSampleMessage() {
-	//         console.log("Since we're publishing on subscribe connectEvent, we're sure we'll receive the following publish.");
-	//         var publishConfig = {
-	//             channel : "hello_world",
-	//             message : "Hello from PubNub Docs!"
-	//         }
-	//         pubnub.publish(publishConfig, function(status, response) {
-	//             console.log(status, response);
-	//         })
-	//     }
-	       
-	//     pubnub.addListener({
-	//         status: function(statusEvent) {
-	//             if (statusEvent.category === "PNConnectedCategory") {
-	//                 publishSampleMessage();
-	//             }
-	//         },
-	//         message: function(message) {
-	//             console.log("New Message!!", message);
-	//         },
-	//         presence: function(presenceEvent) {
-	//             // handle presence
-	//         }
-	//     })      
-	//     console.log("Subscribing..");
-	//     pubnub.subscribe({
-	//         channels: ['hello_world'] 
-	//     });
-	// };
-	
-	render ( ) {
-		return (
+	render () {
+    return (
 			<div>
-				<h1 style={{color: "red" }}>I am a map and I have to be called from view.js 
-				  as well as have my hot link in index ejs!!!!!!!!!!!!</h1>
-				  <button onClick={this.handleClick.bind(this)}> Dance Bitch </button>
-	      <div id="html-id" style={{height: "500px", width: "100%" }}>   
-       </div>
+				<button onClick={this.handleClick.bind(this)}> Dance, Petunia </button>
+	      <div id="map" style={{height: "500px", width: "100%" }} />   
 		  </div> 
 		)
 	}
