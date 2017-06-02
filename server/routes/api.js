@@ -8,6 +8,7 @@ const stations = require('./stations.js');
 
 router.route('/')
   .get((req, res) => {
+    console.log('I am in the first thing')
     res.status(200).send('Hello World!');
   })
   .post((req, res) => {
