@@ -6,6 +6,8 @@ import eon from 'eon-map';
 import mapbox from 'mapbox.js';
 import mapboxgl from 'mapbox-gl';
 import mapAttributes from './map/map_components.js';
+import northStations from './northStations.js'; 
+
 
 
 const pubnub = new PubNub({
@@ -31,38 +33,60 @@ class MapTest extends React.Component {
   }
 
     handleClick () {
-     setInterval((arg) => {
-       new PubNub({
-         publishKey: mapAttributes.publishKey, // replace with your own pub-key
-         subscribeKey: mapAttributes.subscribeKey // replace with your own sub-key
-       }).publish({
-        channel: 'eon-map',
-        message: [
-        {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
-        {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
-        {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
-        {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
-        {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
-        {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
+    let i = -1;
+   
+      setInterval((arg) => {
+        i++;
+        this.setState({
+          center: [northStations[i][0], northStations[i][1]]
+        })
+        new PubNub({
+          publishKey: mapAttributes.publishKey, // replace with your own pub-key
+          subscribeKey: mapAttributes.subscribeKey // replace with your own sub-key
+        }).publish({
+        channel: ['eon-map'],
+        message:[
+          {"latlng":[ northStations[i][1], northStations[i][0] ]} 
         ]
-   });
-   }, 1000)
-
+        });
+      }, 5000)
+    
   }
+
+   //   setInterval((arg) => {
+   //     new PubNub({
+   //       publishKey: mapAttributes.publishKey, // replace with your own pub-key
+   //       subscribeKey: mapAttributes.subscribeKey // replace with your own sub-key
+   //     }).publish({
+   //      channel: 'eon-map',
+   //      message: [
+   //      ,
+   //      {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
+   //      {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
+   //      {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
+   //      {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
+   //      {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
+   //      ]
+   // });
+   // }, 1000)
+
 
     componentDidMount() {
     console.log(JSON.stringify(eon))
      let map = eon.map({
        pubnub: new PubNub({
         publishKey: mapAttributes.publishKey, // replace with your own pub-key
-        subscribeKey: mapAttributes.subscribeKey // replace with your own sub-key
+        subscribeKey: mapAttributes.subscribeKey, // replace with your own sub-key
+        ssl: true
       }),
-       channels: ['eon-map'],
        id: 'map',
        mbToken: 'pk.eyJ1IjoiamF4b25jYXJ0ZXIiLCJhIjoiY2ozYXkyeTMwMDExbTJ5cGh0N3I5M2djNiJ9.BiO4svi_FBp5s49sLjiglg',
        mbId: 'jaxoncarter.cj3g8edgk000d33mh10iqxryr-4ndup',
+       channels: ['eon-map'],
+       rotate: true,
        message: function (data) {
-         map.setView(data[3].latlng);
+         console.log(data[0].latlng)
+         map.setView(data[0].latlng);
       }
      })
   }
@@ -79,30 +103,11 @@ class MapTest extends React.Component {
           height: "500px",
           width: "100%"
         }}
-        center={this.state.center}> 
-        <ScaleControl />
-        <ZoomControl />
-        <GeoJSONLayer
-            data = {{
-                "type": "Feature",
-                "properties": {},
-                "geometry": {
-                    "type": "LineString",
-                    "coordinates": [
-                        [-122.41396230664543, 37.77932679789778],
-                        [-122.40689875759873, 37.784909447469474]
-                    ]
-                }
-            }}
-            lineLayout = {{
-              'line-join': 'round',
-              'line-cap': 'round'
-            }}
-            linePaint = {{
-              'line-color': '#395',
-              'line-width': 8
-            }}
-          />
+        center={this.state.center}
+        zoom={[12]}> 
+
+
+
       </ReactMapboxGl>
       <h1>Bottom</h1>
       </div>

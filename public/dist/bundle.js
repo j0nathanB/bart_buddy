@@ -12601,6 +12601,10 @@ var _map_components = __webpack_require__(120);
 
 var _map_components2 = _interopRequireDefault(_map_components);
 
+var _northStations = __webpack_require__(257);
+
+var _northStations2 = _interopRequireDefault(_northStations);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -12639,16 +12643,43 @@ var MapTest = function (_React$Component) {
   _createClass(MapTest, [{
     key: 'handleClick',
     value: function handleClick() {
+      var _this2 = this;
+
+      var i = -1;
+
       setInterval(function (arg) {
+        i++;
+        _this2.setState({
+          center: [_northStations2.default[i][0], _northStations2.default[i][1]]
+        });
         new _pubnub2.default({
           publishKey: _map_components2.default.publishKey, // replace with your own pub-key
           subscribeKey: _map_components2.default.subscribeKey // replace with your own sub-key
         }).publish({
-          channel: 'eon-map',
-          message: [{ "latlng": [33 * Math.random(), -89 * Math.random()] }, { "latlng": [33 * Math.random(), -89 * Math.random()] }, { "latlng": [33 * Math.random(), -89 * Math.random()] }, { "latlng": [33 * Math.random(), -89 * Math.random()] }, { "latlng": [33 * Math.random(), -89 * Math.random()] }, { "latlng": [33 * Math.random(), -89 * Math.random()] }]
+          channel: ['eon-map'],
+          message: [{ "latlng": [_northStations2.default[i][1], _northStations2.default[i][0]] }]
         });
-      }, 1000);
+      }, 5000);
     }
+
+    //   setInterval((arg) => {
+    //     new PubNub({
+    //       publishKey: mapAttributes.publishKey, // replace with your own pub-key
+    //       subscribeKey: mapAttributes.subscribeKey // replace with your own sub-key
+    //     }).publish({
+    //      channel: 'eon-map',
+    //      message: [
+    //      ,
+    //      {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
+    //      {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
+    //      {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
+    //      {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
+    //      {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
+    //      ]
+    // });
+    // }, 1000)
+
+
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
@@ -12656,14 +12687,17 @@ var MapTest = function (_React$Component) {
       var map = _eonMap2.default.map({
         pubnub: new _pubnub2.default({
           publishKey: _map_components2.default.publishKey, // replace with your own pub-key
-          subscribeKey: _map_components2.default.subscribeKey // replace with your own sub-key
+          subscribeKey: _map_components2.default.subscribeKey, // replace with your own sub-key
+          ssl: true
         }),
-        channels: ['eon-map'],
         id: 'map',
         mbToken: 'pk.eyJ1IjoiamF4b25jYXJ0ZXIiLCJhIjoiY2ozYXkyeTMwMDExbTJ5cGh0N3I5M2djNiJ9.BiO4svi_FBp5s49sLjiglg',
         mbId: 'jaxoncarter.cj3g8edgk000d33mh10iqxryr-4ndup',
+        channels: ['eon-map'],
+        rotate: true,
         message: function message(data) {
-          map.setView(data[3].latlng);
+          console.log(data[0].latlng);
+          map.setView(data[0].latlng);
         }
       });
     }
@@ -12681,37 +12715,15 @@ var MapTest = function (_React$Component) {
         _react2.default.createElement(
           'div',
           { id: 'map' },
-          _react2.default.createElement(
-            _reactMapboxGl2.default,
-            {
-              style: 'mapbox://styles/jaxoncarter/cj3gdu8u5000u2sqzx5jpufk7',
-              accessToken: 'pk.eyJ1IjoiamF4b25jYXJ0ZXIiLCJhIjoiY2ozYXkyeTMwMDExbTJ5cGh0N3I5M2djNiJ9.BiO4svi_FBp5s49sLjiglg',
-              containerStyle: {
-                height: "500px",
-                width: "100%"
-              },
-              center: this.state.center },
-            _react2.default.createElement(_reactMapboxGl.ScaleControl, null),
-            _react2.default.createElement(_reactMapboxGl.ZoomControl, null),
-            _react2.default.createElement(_reactMapboxGl.GeoJSONLayer, {
-              data: {
-                "type": "Feature",
-                "properties": {},
-                "geometry": {
-                  "type": "LineString",
-                  "coordinates": [[-122.41396230664543, 37.77932679789778], [-122.40689875759873, 37.784909447469474]]
-                }
-              },
-              lineLayout: {
-                'line-join': 'round',
-                'line-cap': 'round'
-              },
-              linePaint: {
-                'line-color': '#395',
-                'line-width': 8
-              }
-            })
-          ),
+          _react2.default.createElement(_reactMapboxGl2.default, {
+            style: 'mapbox://styles/jaxoncarter/cj3gdu8u5000u2sqzx5jpufk7',
+            accessToken: 'pk.eyJ1IjoiamF4b25jYXJ0ZXIiLCJhIjoiY2ozYXkyeTMwMDExbTJ5cGh0N3I5M2djNiJ9.BiO4svi_FBp5s49sLjiglg',
+            containerStyle: {
+              height: "500px",
+              width: "100%"
+            },
+            center: this.state.center,
+            zoom: [12] }),
           _react2.default.createElement(
             'h1',
             null,
@@ -46473,6 +46485,15 @@ function getY(p) {
     return p.y;
 }
 
+
+/***/ }),
+/* 257 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = [[-122.38644, 37.600407], [-122.392714, 37.615939], [-122.416438, 37.637523], [-122.444279, 37.664379], [-122.466042, 37.684552], [-122.468983, 37.706272], [-122.447009, 37.722119], [-122.433481, 37.733284], [-122.418188, 37.752354], [-122.419364, 37.76522], [-122.41407, 37.779788], [-122.4076, 37.784591], [-122.40113, 37.789395], [-122.395836, 37.793113], [-122.373837, 37.803183], [-122.332271, 37.810154], [-122.302665, 37.808295], [-122.294823, 37.805042], [-122.265021, 37.796832], [-122.271687, 37.803493], [-122.268942, 37.808295], [-122.266786, 37.829049], [-122.251297, 37.844534], [-122.270119, 37.85212], [-122.267962, 37.869921], [-122.299136, 37.902881], [-122.316782, 37.925155], [-122.35325, 37.936599]];
 
 /***/ })
 /******/ ]);
