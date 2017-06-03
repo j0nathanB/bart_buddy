@@ -32,7 +32,7 @@ router.route('/closest_station')
       res.send(JSON.parse(json));
     })
     .catch( (err) => {
-      console.log('error from weather api: ', err.message);
+      console.log('error from bart api: ', err.message);
     });
 
   });
@@ -55,7 +55,7 @@ router.route('/get_stations')
       res.send(newArray);
     })
     .catch( (err) => {
-      console.log('error from weather api: ', err.message);
+      console.log('error from bart api: ', err.message);
     });
   });
 
@@ -75,28 +75,27 @@ router.route('/get_stations')
       res.send(data);
     })
     .catch( (err) => {
-      console.log('error from weather api: ', err.message);
+      console.log('error from bart api: ', err.message);
     });
   });
 
 
-  ///GET SEPCIFIC ROUTE INFORMATION NOT COMPLETE 
-
-  // router.route('/schedule')
-  // .get((req, res) => {
-
-  //   let url = ``;
-  //   axios.get(url)
-  //   .then( (result) => {
-  //     console.log('I am working from inside get_stations');
-  //     var json = parser.toJson(result.data);
-  //     let data = JSON.parse(json);
-  //     res.send(data.root.stations.station);
-  //   })
-  //   .catch( (err) => {
-  //     console.log('error from weather api: ', err.message);
-  //   });
-  // });
+  router.route('/schedule')
+  .post((req, res) => {
+    
+    
+    let url = `http://api.bart.gov/api/etd.aspx?cmd=etd&orig={stationCode}&key=QQZR-5GY8-99PT-DWE9`;
+    axios.get(url)
+    .then( (result) => {
+      console.log('I am working from inside schedule');
+      var json = parser.toJson(result.data);
+      let data = JSON.parse(json);
+      res.send(data.root.stations.station);
+    })
+    .catch( (err) => {
+      console.log('error from bart api: ', err.message);
+    });
+  });
 
   //calls that need to happen 	 	
   	//arrive and or depart

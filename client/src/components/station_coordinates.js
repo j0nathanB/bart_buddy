@@ -1,6 +1,4 @@
-const distance = require('geodist');
-
-let stationLat_and_Long = [
+let stationList = [
   {
     "name": "12th St. Oakland City Center",
     "abbr": "12TH",
@@ -509,10 +507,5 @@ let stationLat_and_Long = [
   }
 ];
 
-let myLocation = {
-  lat: 37.7836966,
-  long: -122.4089664
-};
-
-module.exports = stationLat_and_Long;
+module.exports = stationList;
 
