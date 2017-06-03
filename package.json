@@ -6,6 +6,7 @@
   },
   "scripts": {
     "start": "node index.js",
+    "start-dev": "nodemon index.js",
     "test": "NODE_ENV=test grunt test",
     "build": "webpack --watch",
     "heroku-postbuild": "knex migrate:latest && webpack -d --config webpack.config.babel.js"
@@ -40,6 +41,7 @@
     "mapbox": "^1.0.0-beta7",
     "mapbox-gl": "^0.37.0",
     "mapbox.js": "^3.1.1",
+    "material-ui": "^0.18.1",
     "morgan": "^1.8.1",
     "node": "^0.0.0",
     "npm": "^4.6.1",
@@ -54,6 +56,7 @@
     "react-dom": "^15.4.2",
     "react-leaflet": "^1.2.0",
     "react-mapbox-gl": "^1.12.0",
+    "react-tap-event-plugin": "^2.0.1",
     "redis": "^2.7.1",
     "webpack": "^2.6.1",
     "xml2json": "^0.11.0"
