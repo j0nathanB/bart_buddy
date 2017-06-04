@@ -11,7 +11,7 @@ const styles = {
 
 const items = [];
 
-items.push(<MenuItem value={stationList.length} key={stationList.length} primaryText={"Use Location" } />);
+//items.push(<MenuItem value={stationList.length} key={stationList.length} primaryText={"Use Location" } />);
 
 for (let i = 0; i < stationList.length; i++) {
   items.push(<MenuItem value={i} key={i} primaryText={`${stationList[i].name}` } />);
@@ -31,7 +31,7 @@ class station extends React.Component {
   handleChange(event, index, value) {
     this.setState({value: value});
     let station = stationList.find( (element) => element.name === items[index].props.primaryText)
-    this.props.stationUpdate(station);
+    this.props.updateStation(station);
     this.props.getSchedule(station);
   }
 

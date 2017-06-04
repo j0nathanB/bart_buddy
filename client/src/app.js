@@ -7,7 +7,7 @@ import TrainRoutes from './components/trainRoutes';
 import Map from './components/map.js';
 import ClosestStation from './components/closestStation';
 import stationLat_and_Long from './components/station_coordinates';
-import hardCodedTrainRoutes from './components/hardCodedTrainRoutes';
+import destinations from './components/destinations';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import axios from 'axios'
@@ -31,11 +31,12 @@ class App extends React.Component {
       long: 0,
       isLoading: false,
       currentStation: stationLat_and_Long[0],
-      trainRoute: hardCodedTrainRoutes[0]
+      currentRoute: destinations[0],
+      schedule: []
     };
-    this.trainRouteUpdate = this.trainRouteUpdate.bind(this);
-    this.stationUpdate = this.stationUpdate.bind(this);
-    this.simplePost = this.simplePost.bind(this);
+    this.updateRoute = this.updateRoute.bind(this);
+    this.updateStation = this.updateStation.bind(this);
+//    this.simplePost = this.simplePost.bind(this);
     this.getSchedule = this.getSchedule.bind(this);
   }
 
@@ -54,26 +55,26 @@ class App extends React.Component {
     });
   }
 
-  simplePost(newTrainRoute, newStation) {
-    axios.post('/api', { 
-      trainRoute: newTrainRoute, 
-      currentStation: newStation
-    }).then(res => {
-      console.log('updated simplePost:', res);
-    })
-    .catch(err => {
-      throw err;
-    });
+  // simplePost(route, station) {
+  //   axios.post('/api', { 
+  //     currentRoute: route, 
+  //     currentStation: station
+  //   }).then(res => {
+  //     console.log('updated simplePost:', res);
+  //   })
+  //   .catch(err => {
+  //     throw err;
+  //   });
+  // }
+
+  updateRoute(data) {
+    this.setState({currentRoute: data});
+    //this.simplePost(data, this.state.currentStation);
   }
 
-  trainRouteUpdate(data) {
-    this.setState({trainRoute: data});
-    this.simplePost(data, this.state.currentStation);
-  }
-
-  stationUpdate(data) {
+  updateStation(data) {
     this.setState({currentStation: data});
-    this.simplePost(data, this.state.currentStation);
+    //this.simplePost(data, this.state.currentStation);
   }
 
   getSchedule(station) {
@@ -91,19 +92,22 @@ class App extends React.Component {
       this.setState({
         schedule: tempSchedule
       })
-    }
-    );
+    })
+    .catch(err => {
+      throw err;
+    });
   }
+
   render () {
     return (
       <MuiThemeProvider>
         <div>
           <View />
           <ClosestStation lat={this.state.lat} long={this.state.long} loading={this.state.isLoading}/>
-          <Station stationUpdate={this.stationUpdate} getSchedule={this.getSchedule}/>
-          <TrainRoutes userinputhandler={this.trainRouteUpdate}/>
+          <Station updateStation={this.updateStation} getSchedule={this.getSchedule}/>
+          <TrainRoutes clickHandler={this.updateRoute}/>
           <Map center={this.state.lat, this.state.long} loading={this.state.isLoading}/>
-          <Bulletin station={this.state.currentStation} />
+          <Bulletin route={this.state.currentRoute} schedule={this.state.schedule}/>
         </div>
       </MuiThemeProvider>
     );
