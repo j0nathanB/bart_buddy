@@ -1,7 +1,8 @@
 import React from 'react';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-import stationLat_and_Long from './station_coordinates'
+import stationLat_and_Long from './station_coordinates';
+import hardCodedTrainRoutes from './hardCodedTrainRoutes';
 
 const styles = {
   customWidth: {
@@ -9,28 +10,10 @@ const styles = {
   },
 };
 
-var hardCodedTrainRoutes = [ 
-  'select-route',
-  'PITT-SFIA',
-  'DALY-DUBL',
-  'DALY-WARM',
-  'DUBL-DALY',
-  'WARM-DALY',
-  'WARM-RICH',
-  'MLBR-RICH',
-  'RICH-WARM',
-  'RICH-MLBR',
-  'SFIA-PITT',
-  'COLS-OAKL',
-  'OAKL-COLS' ];
-
-// PITT-SFIA
-
 const items = [];
 
 for (let j = 0; j < hardCodedTrainRoutes.length; j++) {
   items.push(<MenuItem value={j} key={j} primaryText={`${hardCodedTrainRoutes[j]}` } />);
-  console.log()
 }
 
 class TrainRoutes extends React.Component {
@@ -41,6 +24,7 @@ class TrainRoutes extends React.Component {
   }
 
   handleChange(event, index, value) {
+    this.props.userinputhandler(hardCodedTrainRoutes[value]);
     this.setState({value: value});
   }
 

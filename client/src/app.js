@@ -8,10 +8,13 @@ import Station from './components/station';
 import TrainRoutes from './components/trainRoutes';
 import Map from './components/map.js';
 import ClosestStation from './components/closestStation';
+import stationLat_and_Long from './components/station_coordinates';
+import hardCodedTrainRoutes from './components/hardCodedTrainRoutes';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-// Needed for onTouchTap
-// http://stackoverflow.com/a/34015469/988941
+import axios from 'axios';
+
 injectTapEventPlugin();
 
 
@@ -21,7 +24,7 @@ const getCoords = () => new Promise((resolve, reject) => {
   });
 });
 
-
+console.log("hardCodedTrainRoutes[0] =", hardCodedTrainRoutes[0]);
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -29,8 +32,13 @@ class App extends React.Component {
       lat: 0,
       long: 0,
       isLoading: false,
-      currentStation: ''
+      currentStation: stationLat_and_Long[0],
+      trainRoute: hardCodedTrainRoutes[0]
     };
+    this.testClick = this.testClick.bind(this);
+    this.trainRouteUpdate = this.trainRouteUpdate.bind(this);
+    this.stationUpdate = this.stationUpdate.bind(this);
+    this.simplePost = this.simplePost.bind(this);
   }
 
   componentWillMount() {
@@ -48,15 +56,46 @@ class App extends React.Component {
     });
   }
 
+  simplePost(newTrainRoute, newStation) {
+    //var data = "hello BARTBuddy World";
+    console.log("simplePost called, newTrainRoute = ", newTrainRoute, " newStation = ", newStation);
+    axios.post('/api', { 
+      trainRoute: newTrainRoute, 
+      currentStation: newStation
+    }).then(res => {
+      console.log(res);
+    })
+    .catch(err => {
+      throw err;
+    });
+  }
+
+  trainRouteUpdate(data) {
+    //var data = "hello BARTBuddy World";
+    console.log("trainRouteUpdate called, data = ", data);
+    this.setState({trainRoute: data});
+    this.simplePost(data, this.state.currentStation);
+  }
+
+  stationUpdate(data) {
+    //var data = "hello BARTBuddy World";
+    console.log("stationUpdate called, data = ", data);
+    this.setState({station: data});
+    this.simplePost(data, this.state.currentStation);
+  }
+
+  testClick(data) {
+    console.log("testClick called, data = ", data);
+  }
+
   render () {
     return (
       <MuiThemeProvider>
         <div>
           <ClosestStation lat={this.state.lat} long={this.state.long} loading={this.state.isLoading}/>
-          <View />
           <Bulletin />
           <Station />
-          <TrainRoutes />
+          <TrainRoutes userinputhandler={this.trainRouteUpdate}/>
           <Map />
         </div>
       </MuiThemeProvider>
