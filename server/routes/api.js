@@ -83,15 +83,17 @@ router.route('/get_stations')
 
   router.route('/schedule')
   .post((req, res) => {
+    let stationObj = {
+      station: req.body.abbr
+    };
     
+    let url = `http://api.bart.gov/api/etd.aspx?cmd=etd&orig=${stationObj.station}&key=QQZR-5GY8-99PT-DWE9`;
     
-    let url = `http://api.bart.gov/api/etd.aspx?cmd=etd&orig={stationCode}&key=QQZR-5GY8-99PT-DWE9`;
     axios.get(url)
     .then( (result) => {
-      console.log('I am working from inside schedule');
       var json = parser.toJson(result.data);
       let data = JSON.parse(json);
-      res.send(data.root.stations.station);
+      res.send(data.root);
     })
     .catch( (err) => {
       console.log('error from bart api: ', err.message);

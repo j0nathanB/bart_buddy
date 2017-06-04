@@ -1,7 +1,7 @@
 import React from 'react';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-import stationLat_and_Long from './station_coordinates'
+import stationList from './station_coordinates'
 
 const styles = {
   customWidth: {
@@ -11,22 +11,28 @@ const styles = {
 
 const items = [];
 
+items.push(<MenuItem value={stationList.length} key={stationList.length} primaryText={"Use Location" } />);
 
-for (let j = 0; j < stationLat_and_Long.length; j++) {
-  items.push(<MenuItem value={j} key={j} primaryText={`${stationLat_and_Long[j].name}` } />);
+for (let i = 0; i < stationList.length; i++) {
+  items.push(<MenuItem value={i} key={i} primaryText={`${stationList[i].name}` } />);
 }
-items.push(<MenuItem value={stationLat_and_Long.length} key={stationLat_and_Long.length} primaryText={"Use Location" } />);
+
 
 class station extends React.Component {
-
   constructor(props) {
     super(props);
-    this.state = {value: 0};
+    this.state = {
+      value: 0,
+      station: {}
+    };
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(event, index, value) {
     this.setState({value: value});
+    let station = stationList.find( (element) => element.name === items[index].props.primaryText)
+    this.props.stationUpdate(station);
+    this.props.getSchedule(station);
   }
 
   render() {

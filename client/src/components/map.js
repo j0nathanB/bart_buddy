@@ -32,7 +32,7 @@ class MapTest extends React.Component {
     };
   }
 
-    handleClick () {
+  handleClick () {
     let i = -1;
    
       setInterval((arg) => {
@@ -50,28 +50,9 @@ class MapTest extends React.Component {
         ]
         });
       }, 5000)
-    
   }
 
-   //   setInterval((arg) => {
-   //     new PubNub({
-   //       publishKey: mapAttributes.publishKey, // replace with your own pub-key
-   //       subscribeKey: mapAttributes.subscribeKey // replace with your own sub-key
-   //     }).publish({
-   //      channel: 'eon-map',
-   //      message: [
-   //      ,
-   //      {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
-   //      {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
-   //      {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
-   //      {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
-   //      {"latlng":[ 33 * Math.random(), -89 * Math.random()]},
-   //      ]
-   // });
-   // }, 1000)
-
-
-    componentDidMount() {
+  componentDidMount() {
     console.log(JSON.stringify(eon))
      let map = eon.map({
        pubnub: new PubNub({
@@ -92,6 +73,7 @@ class MapTest extends React.Component {
   }
 
   render () {
+    console.log('center: ', this.props.center)
     return (
       <div>
       <button onClick={this.handleClick.bind(this)}> Dance, Petunia </button>
@@ -105,11 +87,7 @@ class MapTest extends React.Component {
         }}
         center={this.state.center}
         zoom={[12]}> 
-
-
-
       </ReactMapboxGl>
-      <h1>Bottom</h1>
       </div>
       </div>
 
