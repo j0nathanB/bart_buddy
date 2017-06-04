@@ -13,6 +13,7 @@ router.route('/')
   })
   .post((req, res) => {
     console.log('in the correct route');
+    console.log(req.body);
     res.status(201).send({ data: 'Posted!' });
   });
 
