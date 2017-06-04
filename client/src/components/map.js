@@ -73,6 +73,7 @@ class MapTest extends React.Component {
   }
 
   render () {
+    console.log('center: ', this.props.center)
     return (
       <div>
       <button onClick={this.handleClick.bind(this)}> Dance, Petunia </button>

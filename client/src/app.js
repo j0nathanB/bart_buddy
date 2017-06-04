@@ -33,7 +33,6 @@ class App extends React.Component {
       currentStation: stationLat_and_Long[0],
       trainRoute: hardCodedTrainRoutes[0]
     };
-    this.testClick = this.testClick.bind(this);
     this.trainRouteUpdate = this.trainRouteUpdate.bind(this);
     this.stationUpdate = this.stationUpdate.bind(this);
     this.simplePost = this.simplePost.bind(this);
@@ -100,10 +99,11 @@ class App extends React.Component {
     return (
       <MuiThemeProvider>
         <div>
-          <Station setStation={this.setStation} getSchedule={this.getSchedule}/>
+          <ClosestStation lat={this.state.lat} long={this.state.long} loading={this.state.isLoading}/>
+          <Station stationUpdate={this.stationUpdate} getSchedule={this.getSchedule}/>
           <TrainRoutes userinputhandler={this.trainRouteUpdate}/>
           <Bulletin station={this.state.currentStation}/>
-          <Map lat={this.state.lat} long={this.state.long}/>
+          <Map center={this.state.lat, this.state.long} loading={this.state.isLoading}/>
           <View />
         </div>
       </MuiThemeProvider>

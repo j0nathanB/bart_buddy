@@ -11,11 +11,6 @@ class ClosestStation extends React.Component {
     this.getClosestStation = this.getClosestStation.bind(this);
   }
 
-  //make API call here on component didMount
-
-  componentWillMount(){
-
-  }
 
   getDistance (userCoords, stationObj) {
     var R = 6371e3; // metres

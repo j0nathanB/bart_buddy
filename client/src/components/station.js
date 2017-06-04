@@ -31,7 +31,7 @@ class station extends React.Component {
   handleChange(event, index, value) {
     this.setState({value: value});
     let station = stationList.find( (element) => element.name === items[index].props.primaryText)
-    this.props.setStation(station);
+    this.props.stationUpdate(station);
     this.props.getSchedule(station);
   }
 
