@@ -1,11 +1,14 @@
 import React from 'react';
+import stationLat_and_Long from './station_coordinates'
 
 class Bulletin extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
+      currentStation: {}
     };
   }
+
 
   render () {
     return (

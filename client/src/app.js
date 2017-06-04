@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-//import Announcement from './components/Announcement.js';
 import View from './components/view';
 import Bulletin from './components/bulletin';
 import Station from './components/station';
@@ -10,10 +8,10 @@ import Map from './components/map.js';
 import ClosestStation from './components/closestStation';
 import stationLat_and_Long from './components/station_coordinates';
 import hardCodedTrainRoutes from './components/hardCodedTrainRoutes';
-
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import axios from 'axios';
+import axios from 'axios'
+
 
 injectTapEventPlugin();
 
@@ -24,7 +22,7 @@ const getCoords = () => new Promise((resolve, reject) => {
   });
 });
 
-console.log("hardCodedTrainRoutes[0] =", hardCodedTrainRoutes[0]);
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -39,6 +37,7 @@ class App extends React.Component {
     this.trainRouteUpdate = this.trainRouteUpdate.bind(this);
     this.stationUpdate = this.stationUpdate.bind(this);
     this.simplePost = this.simplePost.bind(this);
+    this.getSchedule = this.getSchedule.bind(this);
   }
 
   componentWillMount() {
@@ -57,8 +56,6 @@ class App extends React.Component {
   }
 
   simplePost(newTrainRoute, newStation) {
-    //var data = "hello BARTBuddy World";
-    console.log("simplePost called, newTrainRoute = ", newTrainRoute, " newStation = ", newStation);
     axios.post('/api', { 
       trainRoute: newTrainRoute, 
       currentStation: newStation
@@ -71,32 +68,43 @@ class App extends React.Component {
   }
 
   trainRouteUpdate(data) {
-    //var data = "hello BARTBuddy World";
-    console.log("trainRouteUpdate called, data = ", data);
     this.setState({trainRoute: data});
     this.simplePost(data, this.state.currentStation);
   }
 
   stationUpdate(data) {
-    //var data = "hello BARTBuddy World";
-    console.log("stationUpdate called, data = ", data);
-    this.setState({station: data});
+    this.setState({currentStation: data});
     this.simplePost(data, this.state.currentStation);
   }
 
-  testClick(data) {
-    console.log("testClick called, data = ", data);
+  getSchedule(station) {
+    let tempSchedule = [];
+
+    axios.post('/api/schedule', station)
+    .then( 
+      res => res.data.station.etd.map( 
+        route => route.estimate.map( 
+          eta => { tempSchedule.push( {minutes: eta.minutes, destination:route.destination} ) } 
+        ) 
+      )
+    )
+    .then( () => {
+      this.setState({
+        schedule: tempSchedule
+      })
+    }
+    );
   }
 
   render () {
     return (
       <MuiThemeProvider>
         <div>
-          <ClosestStation lat={this.state.lat} long={this.state.long} loading={this.state.isLoading}/>
-          <Bulletin />
-          <Station />
+          <Station setStation={this.setStation} getSchedule={this.getSchedule}/>
           <TrainRoutes userinputhandler={this.trainRouteUpdate}/>
-          <Map />
+          <Bulletin station={this.state.currentStation}/>
+          <Map lat={this.state.lat} long={this.state.long}/>
+          <View />
         </div>
       </MuiThemeProvider>
     );
