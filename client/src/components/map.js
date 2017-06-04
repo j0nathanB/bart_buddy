@@ -88,7 +88,6 @@ class MapTest extends React.Component {
         center={this.state.center}
         zoom={[12]}> 
       </ReactMapboxGl>
-      <h1>Bottom</h1>
       </div>
       </div>
 

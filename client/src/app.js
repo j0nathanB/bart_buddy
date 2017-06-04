@@ -59,7 +59,7 @@ class App extends React.Component {
       trainRoute: newTrainRoute, 
       currentStation: newStation
     }).then(res => {
-      console.log(res);
+      console.log('updated simplePost:', res);
     })
     .catch(err => {
       throw err;
@@ -94,17 +94,16 @@ class App extends React.Component {
     }
     );
   }
-
   render () {
     return (
       <MuiThemeProvider>
         <div>
+          <View />
           <ClosestStation lat={this.state.lat} long={this.state.long} loading={this.state.isLoading}/>
           <Station stationUpdate={this.stationUpdate} getSchedule={this.getSchedule}/>
           <TrainRoutes userinputhandler={this.trainRouteUpdate}/>
-          <Bulletin station={this.state.currentStation}/>
           <Map center={this.state.lat, this.state.long} loading={this.state.isLoading}/>
-          <View />
+          <Bulletin station={this.state.currentStation} />
         </div>
       </MuiThemeProvider>
     );
