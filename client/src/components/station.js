@@ -5,7 +5,7 @@ import stationList from './station_coordinates'
 
 const styles = {
   customWidth: {
-    width: 150,
+    width: 275,
   },
 };
 

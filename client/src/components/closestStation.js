@@ -54,7 +54,7 @@ class ClosestStation extends React.Component {
     let condRender;
 
     if (this.props.loading) {
-      condRender = (null);
+      condRender = <h1>The closest station is ...</h1>;
     } else {
       let closeStation = this.getClosestStation({lat: this.props.lat, long: this.props.long});
       condRender = <h1>The closest station is {closeStation.name} ({closeStation.userTime} minutes away)</h1>;

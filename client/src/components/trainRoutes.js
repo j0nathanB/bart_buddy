@@ -6,7 +6,8 @@ import destinations from './destinations';
 
 const styles = {
   customWidth: {
-    width: 200,
+    width: 275,
+    float:'right'
   },
 };
 
