@@ -4,6 +4,7 @@ import View from './components/view';
 import Bulletin from './components/bulletin';
 import Station from './components/station';
 import TrainRoutes from './components/trainRoutes';
+import LocationButton from './components/currentLocation';
 import Map from './components/map.js';
 import ClosestStation from './components/closestStation';
 import stationLat_and_Long from './components/station_coordinates';
@@ -27,8 +28,10 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      lat: 0,
-      long: 0,
+      lat: 37.78,
+      long: -122.409,
+      userLat: 0,
+      userLong: 0,
       isLoading: false,
       currentStation: stationLat_and_Long[0],
       currentRoute: destinations[0],
@@ -36,8 +39,8 @@ class App extends React.Component {
     };
     this.updateRoute = this.updateRoute.bind(this);
     this.updateStation = this.updateStation.bind(this);
-//    this.simplePost = this.simplePost.bind(this);
     this.getSchedule = this.getSchedule.bind(this);
+    this.useCurrentLocation = this.useCurrentLocation.bind(this)
   }
 
   componentWillMount() {
@@ -50,31 +53,31 @@ class App extends React.Component {
       this.setState({
         lat: response.lat,
         long: response.long,
+        userLat: response.lat,
+        userLong: response.long,
         isLoading: false
       });
     });
   }
 
-  // simplePost(route, station) {
-  //   axios.post('/api', { 
-  //     currentRoute: route, 
-  //     currentStation: station
-  //   }).then(res => {
-  //     console.log('updated simplePost:', res);
-  //   })
-  //   .catch(err => {
-  //     throw err;
-  //   });
-  // }
-
   updateRoute(data) {
     this.setState({currentRoute: data});
-    //this.simplePost(data, this.state.currentStation);
   }
 
   updateStation(data) {
-    this.setState({currentStation: data});
-    //this.simplePost(data, this.state.currentStation);
+    console.log(data);
+    this.setState({
+      currentStation: data,
+      lat: data.gtfs_latitude,
+      long: data.gtfs_longitude,
+    });
+  }
+
+  useCurrentLocation() {
+    this.setState({
+      lat: this.state.userLat,
+      long: this.state.userLong
+    })
   }
 
   getSchedule(station) {
@@ -98,16 +101,21 @@ class App extends React.Component {
     });
   }
 
+  componentDidMount() {
+    setInterval(() => this.getSchedule(this.state.currentStation), 15000)
+  }
+
   render () {
     return (
       <MuiThemeProvider>
         <div>
           <View />
-          <ClosestStation lat={this.state.lat} long={this.state.long} loading={this.state.isLoading}/>
+          <ClosestStation lat={this.state.userLat} long={this.state.userLong} />
+          <LocationButton clickHandler={this.useCurrentLocation}/>
           <Station updateStation={this.updateStation} getSchedule={this.getSchedule}/>
           <TrainRoutes clickHandler={this.updateRoute}/>
-          <Map center={this.state.lat, this.state.long} loading={this.state.isLoading}/>
-          <Bulletin route={this.state.currentRoute} schedule={this.state.schedule}/>
+          <Map center={[this.state.long, this.state.lat]} loading={this.state.isLoading}/>
+          <Bulletin station={this.state.currentStation} route={this.state.currentRoute} schedule={this.state.schedule} getSchedule={this.getSchedule}/>
         </div>
       </MuiThemeProvider>
     );

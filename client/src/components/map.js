@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactMapboxGl, { Layer, Feature, GeoJSONLayer, ScaleControl, ZoomControl  } from "react-mapbox-gl";
+import ReactMapboxGl, { Layer, Feature, GeoJSONLayer, ScaleControl, ZoomControl, Marker } from "react-mapbox-gl";
 import ReactDOM from 'react-dom';
 import PubNub from 'pubnub';
 import eon from 'eon-map';
@@ -32,28 +32,26 @@ class MapTest extends React.Component {
     };
   }
 
-  handleClick () {
-    let i = -1;
-   
-      setInterval((arg) => {
-        i++;
-        this.setState({
-          center: [northStations[i][0], northStations[i][1]]
-        })
+  // handleClick () {
+  //   let i = -1;
+
+  //       i++;
+
+
+      
+  // }
+
+  componentDidMount() {
         new PubNub({
           publishKey: mapAttributes.publishKey, // replace with your own pub-key
           subscribeKey: mapAttributes.subscribeKey // replace with your own sub-key
         }).publish({
         channel: ['eon-map'],
         message:[
-          {"latlng":[ northStations[i][1], northStations[i][0] ]} 
+          {"latlng":[this.props.center[1], this.props.center[0]]} 
         ]
         });
-      }, 5000)
-  }
 
-  componentDidMount() {
-    console.log(JSON.stringify(eon))
      let map = eon.map({
        pubnub: new PubNub({
         publishKey: mapAttributes.publishKey, // replace with your own pub-key
@@ -67,28 +65,33 @@ class MapTest extends React.Component {
        rotate: true,
        message: function (data) {
          console.log(data[0].latlng)
-         map.setView(data[0].latlng);
-      }
+         map.setView(data[0].latlng)
+     }
      })
   }
 
   render () {
-    console.log('center: ', this.props.center)
     return (
       <div>
-      <button onClick={this.handleClick.bind(this)}> Dance, Petunia </button>
-      <div id='map'>
-      <ReactMapboxGl
-        style="mapbox://styles/jaxoncarter/cj3gdu8u5000u2sqzx5jpufk7"
-        accessToken="pk.eyJ1IjoiamF4b25jYXJ0ZXIiLCJhIjoiY2ozYXkyeTMwMDExbTJ5cGh0N3I5M2djNiJ9.BiO4svi_FBp5s49sLjiglg"
-        containerStyle={{
-          height: "500px",
-          width: "100%"
-        }}
-        center={this.state.center}
-        zoom={[14]}> 
-      </ReactMapboxGl>
-      </div>
+        <div id='map'>
+          <ReactMapboxGl
+            style="mapbox://styles/jaxoncarter/cj3gdu8u5000u2sqzx5jpufk7"
+            accessToken="pk.eyJ1IjoiamF4b25jYXJ0ZXIiLCJhIjoiY2ozYXkyeTMwMDExbTJ5cGh0N3I5M2djNiJ9.BiO4svi_FBp5s49sLjiglg"
+            containerStyle={{
+              height: "500px",
+              width: "100%"
+            }}
+            center={this.props.center}
+            zoom={[14]}> 
+            <Layer
+                  type="symbol"
+                  id="marker"
+                  layout={{ "icon-image": "marker-15" }}>
+                  <Feature coordinates={[-0.481747846041145, 51.3233379650232]}/>
+                </Layer>
+
+          </ReactMapboxGl>
+        </div>
       </div>
 
     );
