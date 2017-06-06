@@ -83,6 +83,8 @@ router.route('/get_stations')
 
   router.route('/schedule')
   .post((req, res) => {
+    let schedules = [];
+
     let stationObj = {
       station: req.body.abbr
     };
@@ -93,10 +95,22 @@ router.route('/get_stations')
     .then( (result) => {
       var json = parser.toJson(result.data);
       let data = JSON.parse(json);
-      res.send(data.root);
+      
+      data.root.station.etd.map( 
+        route => { 
+          if (Array.isArray(route.estimate)) {
+            route.estimate.map( 
+              eta => { schedules.push( {minutes: eta.minutes, destination:route.destination} ) } 
+            )
+          } else {
+            schedules.push( {minutes: route.estimate.minutes, destination:route.destination} )
+          }
+        }
+      );
+      res.send(schedules);
     })
     .catch( (err) => {
-      console.log('error from bart api: ', err.message);
+      console.log('Error in /schedule: ', err.message);
     });
   });
 

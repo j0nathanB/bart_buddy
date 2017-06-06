@@ -15,14 +15,24 @@ class Bulletin extends React.Component {
   render () {
     return (
       <div>
-        <h1>Next:</h1>
+        <h1>Next Train:</h1>
         {this.props.schedule.filter(
           destination => destination.destination === this.props.route
-          ).map( (arrival, index) => 
-            <Card key={index}>
-              <CardTitle key={index} title={this.props.route + ": " + arrival.minutes + " minutes"}/>
-            </Card>
-            )
+          ).map( (arrival, index) => {
+            let departureTime = '';
+
+            if(arrival.minutes === 'Leaving') {
+              departureTime = arrival.minutes + ' station now'
+            } else {
+              departureTime = arrival.minutes + ' minutes'
+            }
+
+            return (
+              <Card key={index}>
+                <CardTitle key={index} title={this.props.route + ': ' + departureTime}/>
+              </Card>
+            );
+          })
         }
       </div>
     );

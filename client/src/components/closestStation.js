@@ -1,5 +1,10 @@
 import React from 'react';
 import stationList from './station_coordinates';
+import RaisedButton from 'material-ui/RaisedButton';
+
+const style = {
+  margin: 12,
+};
 
 class ClosestStation extends React.Component {
   constructor(props) {
@@ -9,6 +14,7 @@ class ClosestStation extends React.Component {
     };
     this.getDistance = this.getDistance.bind(this);
     this.getClosestStation = this.getClosestStation.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
 
@@ -49,20 +55,16 @@ class ClosestStation extends React.Component {
     return closestStation;
   }
 
+  handleClick(){
+    let station = this.getClosestStation({lat: this.props.lat, long:this.props.long})
+    this.props.clickHandler(station);
+  }
+
 
   render() {
-    let condRender;
-
-    if (this.props.loading) {
-      condRender = <h1>The closest station is ...</h1>;
-    } else {
-      let closeStation = this.getClosestStation({lat: this.props.lat, long: this.props.long});
-      condRender = <h1>The closest station is {closeStation.name} ({closeStation.userTime} minutes away)</h1>;
-    }
-
     return (
-      <div style={{textAlign: 'center'}}>
-        {condRender}
+      <div style={{gridColumn: '1/3', gridRow:1, margin:'auto'}}>
+        <RaisedButton label="Use Closest" primary={true} style={style} onTouchTap={this.handleClick}/>
       </div>
     );
   }
