@@ -3,7 +3,7 @@ const RedisStore = require('connect-redis')(session);
 const redisClient = require('redis').createClient(process.env.REDIS_URL);
 
 module.exports.verify = (req, res, next) => {
-  if (!req.isAuthenticated()) {
+  if (req.isAuthenticated()) {
     return next();
   }
   res.redirect('/login');

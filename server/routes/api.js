@@ -8,7 +8,7 @@ const stations = require('./stations.js');
 
 router.route('/')
   .get((req, res) => {
-    console.log('I am in the first thing')
+    console.log(`>>>>>>>>>> api/`);
     res.status(200).send('Hello World!');
   })
   .post((req, res) => {
@@ -114,12 +114,5 @@ router.route('/get_stations')
     });
   });
 
-  //calls that need to happen 	 	
-  	//arrive and or depart
-  	//filtered real time estimates 
-  	//routes and route information 
-  	//holidays 
-  	//station schedule 
-  	//train count 
 
 module.exports = router;

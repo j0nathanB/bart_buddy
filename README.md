@@ -6,8 +6,8 @@ The project description
 
 - Jackson Carter
 - Greg Coffeng
-- Jonathon Bradshaw 
-- Vigellis Sotiropoulo
+- Jonathan Bradshaw 
+- Vagellis Sotiropoulos
 
 ## Roadmap
 

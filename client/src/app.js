@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import AppBar from './components/app_bar'
 import View from './components/view';
 import Bulletin from './components/bulletin';
 import Station from './components/station';
@@ -110,7 +111,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    //setInterval(() => this.getSchedule(this.state.currentStation), 15000)
+    setInterval(() => this.updateSchedule(this.state.currentStation), 15000)
   }
 
   render () {
@@ -125,8 +126,9 @@ class App extends React.Component {
     return (
       <MuiThemeProvider>
         <div>
+        <AppBar />
           <View />
-          {condRender}
+          {condRender} 
 
           <div style={{display: 'grid', gridTemplateColumns:'repeat(7, 1fr)'}}>
             <div style={{gridColumn: '1/5', gridRow:1}}>

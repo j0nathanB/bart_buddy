@@ -3,16 +3,17 @@ const middleware = require('../middleware');
 
 const router = express.Router();
 
+
 router.route('/')
   .get(middleware.auth.verify, (req, res) => {
-    console.log('I am the FIRST THING THAT HAPPENS');
+    console.log(`>>>>>>>>>> auth/`);
     res.render('index.ejs');
   });
 
 
 router.route('/login')
   .get((req, res) => {
-    console.log('I am in login!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log(`>>>>>>>>>> auth/login`);
     res.render('login.ejs', { message: req.flash('loginMessage') });
   })
   .post(middleware.passport.authenticate('local-login', {
@@ -23,7 +24,7 @@ router.route('/login')
 
 router.route('/signup')
   .get((req, res) => {
-    console.log('I am in signup!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log(`>>>>>>>>>> auth/signup`);
     res.render('signup.ejs', { message: req.flash('signupMessage') });
   })
   .post(middleware.passport.authenticate('local-signup', {
@@ -34,7 +35,7 @@ router.route('/signup')
 
 router.route('/profile')
   .get(middleware.auth.verify, (req, res) => {
-    console.log('I am in profile!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.log(`>>>>>>>>>> auth/profile`);
     res.render('profile.ejs', {
       user: req.user // get the user out of session and pass to template
     });

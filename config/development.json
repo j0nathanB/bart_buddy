@@ -1,6 +1,10 @@
 {
   "knex": {
     "client": "postgresql",
+    "connection": {
+      "database": "thesis_devel",
+      "user": "jlb1982"
+    },
     "pool": {
       "min": 1,
       "max": 2
